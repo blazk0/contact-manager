@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Navbar from './components/layout/Navbar';
@@ -8,10 +8,13 @@ import NotFound from './components/pages/NotFound';
 import AddContact from './components/contacts/AddContact';
 import EditContact from './components/contacts/EditContact';
 
+import { Provider } from 'react-redux';
+import store from './store';
+
 class App extends Component {
   render() {
     return (
-      <Fragment>
+      <Provider store={store}>
         <Router>
           <Navbar />
           <div className="container">
@@ -24,7 +27,7 @@ class App extends Component {
             </Switch>
           </div>
         </Router>
-      </Fragment>
+      </Provider>
     );
   }
 }
