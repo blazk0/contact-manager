@@ -52,6 +52,7 @@ class Contacts extends Component {
                 <Contact 
                   contact={contact}
                   key={contact.id}
+                  getNewContacts={this.newContacts}
                 />
               );
             })}

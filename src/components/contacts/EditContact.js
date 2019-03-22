@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import firebase from '../../firebase';
-import uuid from 'uuid';
 
 class EditContact extends Component {
   state = {
@@ -10,25 +9,33 @@ class EditContact extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
+
+    firebase
+      .database()
+      .ref(`/0/contacts`)
+      .on('value', snapshot => {
+        snapshot.forEach(childSnapShot => {
+          if (childSnapShot.val().id === id) {
+            this.setState({
+              name: childSnapShot.val().name,
+              phone: childSnapShot.val().phone
+            });
+          }
+        })
+      })
   }
 
   handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
-  submitForm = e => {
+  updateContact = e => {
     e.preventDefault();
 
     const { name, phone } = this.state;
 
-    const contact = {
-      name,
-      phone,
-      id: uuid()
-    }
-
     firebase  
       .database()
-      .ref(`/0/contacts/${contact.id}`)
-      .update(contact);
+      .ref(`/0/contacts/${this.props.match.params.id}`)
+      .update({ name, phone });
 
       this.props.history.push('/');
   }
@@ -41,7 +48,7 @@ class EditContact extends Component {
             Edit Contact
           </div>
           <div className="card-body">
-            <form onSubmit={this.submitForm}>
+            <form onSubmit={this.updateContact}>
               <div className="form-group">
                 <label htmlFor="label">Name</label>
                 <input 
@@ -65,7 +72,7 @@ class EditContact extends Component {
                 />
               </div>
               <button type="submit" className="btn btn-outline-primary btn-block">
-                Add
+                Update
               </button>
             </form>
           </div>
