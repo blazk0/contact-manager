@@ -1,66 +1,37 @@
 import React, { Component, Fragment } from 'react';
 import Contact from './Contact';
+import { connect } from 'react-redux';
 
-import firebase from '../../firebase';
+import { getContacts } from '../../actions/contactActions';
 
 class Contacts extends Component {
-  _isMounted = false;
-
-  state = {
-    contacts: [],
-    hasLoaded: false
-  }
-
   componentDidMount() {
-    this._isMounted = true;
-
-    const arr = [];
-
-    firebase
-      .database()
-      .ref('/0/contacts')
-      .on('value', snapshot => {
-        snapshot.forEach(childSnapShot => {
-          arr.push({
-            name: childSnapShot.val().name,
-            phone: childSnapShot.val().phone,
-            id: childSnapShot.val().id
-          });
-          if (this._isMounted) {
-            this.setState({ contacts: arr, hasLoaded: true });
-          }
-        })
-      })
-  }
-
-  componentWillUnmount() {
-    // Prevent memory leak error in the console
-    this._isMounted = false;
+    this.props.getContacts();
   }
 
   render() {
-    const { contacts, hasLoaded } = this.state;
+    const { contacts } = this.props;
     return (
       <Fragment>
-        {hasLoaded ? (
-          <Fragment>
-            <h1 className="display-4 mb-3">
-              <span className="text-primary">Contacts</span> List
-            </h1>
-            {contacts.map(contact => {
-              return (
-                <Contact 
-                  contact={contact}
-                  key={contact.id}
-                  getNewContacts={this.newContacts}
-                />
-              );
-            })}
-          </Fragment>
-        ): <h1>Loading ...</h1>}
+        <h1 className="display-4 mb-3">
+          <span className="text-primary">Contacts</span> List
+        </h1>
+        {contacts.map(contact => {
+          return (
+            <Contact 
+              contact={contact}
+              key={contact.id}
+              getNewContacts={this.newContacts}
+            />
+          );
+        })}
       </Fragment>
     )
   }
 }
 
-export default Contacts;
+const mapStateToProps = (state) => ({
+  contacts: state.contact.contacts
+});
+
+export default connect(mapStateToProps, { getContacts })(Contacts);

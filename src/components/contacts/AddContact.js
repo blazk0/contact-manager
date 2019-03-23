@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import firebase from '../../firebase';
+import { connect } from 'react-redux';
+import { addContact } from '../../actions/contactActions';
 import uuid from 'uuid';
 
 class AddContact extends Component {
@@ -21,12 +22,9 @@ class AddContact extends Component {
       id: uuid()
     }
 
-    firebase  
-      .database()
-      .ref(`/0/contacts/${contact.id}`)
-      .update(contact);
+    this.props.addContact(this.props.contacts ? [...this.props.contacts, contact] : [contact]);
 
-      this.props.history.push('/');
+    this.props.history.push('/');
   }
 
   render() {
@@ -71,4 +69,8 @@ class AddContact extends Component {
   }
 }
 
-export default AddContact
+const mapStateToProps = state => ({
+  contacts: state.contact.contacts
+});
+
+export default connect(mapStateToProps, { addContact })(AddContact);

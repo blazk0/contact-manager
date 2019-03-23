@@ -1,10 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import firebase from '../../firebase';
+import { connect } from 'react-redux';
+import { deleteContact } from '../../actions/contactActions';
 
 class Contact extends Component {
   state = {
     showInfo: false
+  }
+
+  delete = id => {
+    this.props.deleteContact(id);
   }
 
   render() {
@@ -23,6 +28,7 @@ class Contact extends Component {
             <i 
               style={style.xIcon}
               className="fas fa-times text-danger"
+              onClick={this.delete.bind(this, id)}
             />
             <Link to={`contact/${id}`}>
               <i 
@@ -63,4 +69,4 @@ const style = {
   }
 }
 
-export default Contact;
+export default connect(null, { deleteContact })(Contact);
