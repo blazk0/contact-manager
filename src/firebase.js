@@ -1,14 +1,13 @@
 import firebase from 'firebase';
 
 var config = {
-  apiKey: "AIzaSyAqfzHi_RHHtxDJvgAOJYm843qBceqkWv4",
-  authDomain: "contact-manager-31cc3.firebaseapp.com",
-  databaseURL: "https://contact-manager-31cc3.firebaseio.com",
-  projectId: "contact-manager-31cc3",
-  storageBucket: "contact-manager-31cc3.appspot.com",
-  messagingSenderId: "171961201456"
+  apiKey: "AIzaSyC5VeVK-g-rbx7taGTsAXUi2cOQ1Wrq3yQ",
+  authDomain: "my-contacts-c110c.firebaseapp.com",
+  databaseURL: "https://my-contacts-c110c.firebaseio.com",
+  projectId: "my-contacts-c110c",
+  storageBucket: "my-contacts-c110c.appspot.com",
+  messagingSenderId: "149350524379"
 };
-
 firebase.initializeApp(config);
 
 export default firebase;

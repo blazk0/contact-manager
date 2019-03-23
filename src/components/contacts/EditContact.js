@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import firebase from '../../firebase';
+import { connect } from 'react-redux';
+import { getContact, updateContact } from '../../actions/contactActions';
 
 class EditContact extends Component {
   state = {
@@ -9,20 +10,12 @@ class EditContact extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
+    this.props.getContact(id);
+  }
 
-    firebase
-      .database()
-      .ref(`/0/contacts`)
-      .on('value', snapshot => {
-        snapshot.forEach(childSnapShot => {
-          if (childSnapShot.val().id === id) {
-            this.setState({
-              name: childSnapShot.val().name,
-              phone: childSnapShot.val().phone
-            });
-          }
-        })
-      })
+  componentWillReceiveProps(nextProps, nextState) {
+    const { name, phone } = nextProps.contact;
+    this.setState({ name, phone });
   }
 
   handleChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -31,13 +24,21 @@ class EditContact extends Component {
     e.preventDefault();
 
     const { name, phone } = this.state;
+    const { id } = this.props.match.params;
 
-    firebase  
-      .database()
-      .ref(`/0/contacts/${this.props.match.params.id}`)
-      .update({ name, phone });
+    const newContact = {
+      name,
+      phone,
+      id
+    }
 
-      this.props.history.push('/');
+    this.props.contacts.forEach((contact, index) => {
+      if (contact.id === newContact.id) {
+        this.props.updateContact(newContact, index);
+      }
+    });
+
+    this.props.history.push('/');
   }
 
   render() {
@@ -82,4 +83,9 @@ class EditContact extends Component {
   }
 }
 
-export default EditContact;
+const mapStateToProps = state => ({
+  contact: state.contact.contact,
+  contacts: state.contact.contacts
+});
+
+export default connect(mapStateToProps, { getContact, updateContact })(EditContact);

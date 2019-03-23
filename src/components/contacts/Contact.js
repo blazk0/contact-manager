@@ -8,8 +8,16 @@ class Contact extends Component {
     showInfo: false
   }
 
-  delete = id => {
-    this.props.deleteContact(id);
+  deleteContact = id => {
+    let arr = [];
+
+    this.props.contacts.forEach(contact => {
+      if (contact.id !== id) {
+        arr.push(contact);
+      }
+    });
+
+    this.props.deleteContact(id, arr);
   }
 
   render() {
@@ -28,7 +36,7 @@ class Contact extends Component {
             <i 
               style={style.xIcon}
               className="fas fa-times text-danger"
-              onClick={this.delete.bind(this, id)}
+              onClick={this.deleteContact.bind(this, id)}
             />
             <Link to={`contact/${id}`}>
               <i 
@@ -69,4 +77,8 @@ const style = {
   }
 }
 
-export default connect(null, { deleteContact })(Contact);
+const mapStateToProps = state => ({
+  contacts: state.contact.contacts
+});
+
+export default connect(mapStateToProps, { deleteContact })(Contact);
