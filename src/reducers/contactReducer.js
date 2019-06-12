@@ -1,8 +1,15 @@
-import { GET_CONTACTS, DELETE_CONTACT, ADD_CONTACT, GET_CONTACT, UPDATE_CONTACT } from '../actions/types';
+import {
+  GET_CONTACTS,
+  DELETE_CONTACT,
+  ADD_CONTACT,
+  GET_CONTACT,
+  UPDATE_CONTACT
+} from '../actions/types';
 
 const initialState = {
   contacts: [],
-  contact: {}
+  contact: {},
+  loading: true
 };
 
 export default function(state = initialState, action) {
@@ -11,36 +18,36 @@ export default function(state = initialState, action) {
       return {
         ...state,
         contacts: action.payload
-      }
+      };
     case GET_CONTACT:
       return {
         ...state,
-        contact: action.payload
-      }
+        contact: action.payload,
+        loading: false
+      };
     case DELETE_CONTACT:
       return {
         ...state,
         contacts: state.contacts.filter(contact => {
-          return contact.id !== action.payload
+          return contact.id !== action.payload;
         })
-      }
-    case ADD_CONTACT: 
+      };
+    case ADD_CONTACT:
       return {
         contacts: action.payload
-      }
+      };
     case UPDATE_CONTACT:
       return {
         ...state,
         contacts: state.contacts.map(contact => {
           if (action.payload.id === contact.id) {
-            contact = action.payload;
-            return contact;
+            return (contact = action.payload);
           } else {
             return contact;
           }
         })
-      }
-    default: 
+      };
+    default:
       return state;
   }
 }

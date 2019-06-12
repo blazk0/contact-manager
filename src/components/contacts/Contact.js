@@ -1,62 +1,47 @@
-import React, { Component, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { deleteContact } from '../../actions/contactActions';
 
-class Contact extends Component {
-  state = {
-    showInfo: false
-  }
+const Contact = ({ contacts, deleteContact, contact: { name, phone, id } }) => {
+  const [showInfo, setShowInfo] = useState(false);
 
-  deleteContact = id => {
-    let arr = [];
+  const deleteContactHandler = id => {
+    const arr = contacts.filter(contact => contact.id !== id);
 
-    this.props.contacts.forEach(contact => {
-      if (contact.id !== id) {
-        arr.push(contact);
-      }
-    });
+    deleteContact(id, arr);
+  };
 
-    this.props.deleteContact(id, arr);
-  }
-
-  render() {
-    const { name, phone, id } = this.props.contact;
-    const { showInfo } = this.state;
-    return (
-      <Fragment>
-        <div className="card card-body mb-3">
-          <h3>
-            {name}{' '}
-            <i 
-              style={style.downIcon} 
-              className="fas fa-angle-down" 
-              onClick={() => this.setState({ showInfo: !this.state.showInfo })}
-            />
-            <i 
-              style={style.xIcon}
-              className="fas fa-times text-danger"
-              onClick={this.deleteContact.bind(this, id)}
-            />
-            <Link to={`contact/${id}`}>
-              <i 
-                style={style.pen}
-                className="fas fa-pen"
-              />
-            </Link>
-          </h3>
-          {showInfo ? (
-            <ul className="list-group">
-              <li className="list-group-item">
-                  <span style={style.phone}>Phone: </span> {phone}
-              </li>
-           </ul>
-          ): null}
-        </div>
-      </Fragment>
-    )
-  }
-}
+  return (
+    <Fragment>
+      <div className="card card-body mb-3">
+        <h3>
+          {name}{' '}
+          <i
+            style={style.downIcon}
+            className="fas fa-angle-down"
+            onClick={() => setShowInfo(!showInfo)}
+          />
+          <i
+            style={style.xIcon}
+            className="fas fa-times text-danger"
+            onClick={() => deleteContactHandler(id)}
+          />
+          <Link to={`contact/${id}`}>
+            <i style={style.pen} className="fas fa-pen" />
+          </Link>
+        </h3>
+        {showInfo && (
+          <ul className="list-group">
+            <li className="list-group-item">
+              <span style={style.phone}>Phone: </span> {phone}
+            </li>
+          </ul>
+        )}
+      </div>
+    </Fragment>
+  );
+};
 
 const style = {
   phone: {
@@ -75,10 +60,13 @@ const style = {
     cursor: 'pointer',
     marginLeft: '1rem'
   }
-}
+};
 
 const mapStateToProps = state => ({
   contacts: state.contact.contacts
 });
 
-export default connect(mapStateToProps, { deleteContact })(Contact);
+export default connect(
+  mapStateToProps,
+  { deleteContact }
+)(Contact);

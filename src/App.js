@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Navbar from './components/layout/Navbar';
@@ -11,25 +11,23 @@ import EditContact from './components/contacts/EditContact';
 import { Provider } from 'react-redux';
 import store from './store';
 
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Router>
-          <Navbar />
-          <div className="container">
-            <Switch>
-              <Route exact path="/" component={Contacts} />
-              <Route exact path="/about" component={About} />
-              <Route exact path="/contact/add" component={AddContact} />
-              <Route exact path="/contact/:id" component={EditContact} />
-              <Route component={NotFound} />
-            </Switch>
-          </div>
-        </Router>
-      </Provider>
-    );
-  }
-}
+const App = () => {
+  return (
+    <Provider store={store}>
+      <Router>
+        <Navbar />
+        <div className="container">
+          <Switch>
+            <Route exact path="/" component={Contacts} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/contact/add" component={AddContact} />
+            <Route exact path="/contact/:id" component={EditContact} />
+            <Route component={NotFound} />
+          </Switch>
+        </div>
+      </Router>
+    </Provider>
+  );
+};
 
 export default App;
