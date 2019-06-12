@@ -23,7 +23,7 @@ const EditContact = ({
       name: loading || !contact ? '' : contact.name,
       phone: loading || !contact ? '' : contact.phone
     });
-  }, [loading, getContact]);
+  }, [loading, contact && contact.name && contact.phone]);
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

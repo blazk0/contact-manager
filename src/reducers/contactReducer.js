@@ -3,7 +3,8 @@ import {
   DELETE_CONTACT,
   ADD_CONTACT,
   GET_CONTACT,
-  UPDATE_CONTACT
+  UPDATE_CONTACT,
+  HAS_LOADED
 } from '../actions/types';
 
 const initialState = {
@@ -17,12 +18,18 @@ export default function(state = initialState, action) {
     case GET_CONTACTS:
       return {
         ...state,
-        contacts: action.payload
+        contacts: action.payload,
+        loading: false
       };
     case GET_CONTACT:
       return {
         ...state,
         contact: action.payload,
+        loading: false
+      };
+    case HAS_LOADED:
+      return {
+        ...state,
         loading: false
       };
     case DELETE_CONTACT:

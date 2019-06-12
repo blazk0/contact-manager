@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^3.9.2",
     "axios": "^0.18.0",
     "firebase": "^6.1.1",
     "react": "^16.8.4",
@@ -29,5 +28,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8"
+  }
 }

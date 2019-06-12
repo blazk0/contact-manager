@@ -6,12 +6,6 @@ import { deleteContact } from '../../actions/contactActions';
 const Contact = ({ contacts, deleteContact, contact: { name, phone, id } }) => {
   const [showInfo, setShowInfo] = useState(false);
 
-  const deleteContactHandler = id => {
-    const arr = contacts.filter(contact => contact.id !== id);
-
-    deleteContact(id, arr);
-  };
-
   return (
     <Fragment>
       <div className="card card-body mb-3">
@@ -25,7 +19,7 @@ const Contact = ({ contacts, deleteContact, contact: { name, phone, id } }) => {
           <i
             style={style.xIcon}
             className="fas fa-times text-danger"
-            onClick={() => deleteContactHandler(id)}
+            onClick={() => deleteContact(id, contacts)}
           />
           <Link to={`contact/${id}`}>
             <i style={style.pen} className="fas fa-pen" />
